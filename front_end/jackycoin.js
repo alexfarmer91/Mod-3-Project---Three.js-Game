@@ -20,10 +20,20 @@ function createJackieCoin(){
     jackyCoin.rotation.y += 0.04
     jackyCoin.position.y -= 0.07
 
-    if (jackyCoin.position.y < -8.5 
-      && jackyCoin.position.y > -12.5 
-      && (slider.position.x + 3) > jackyCoin.position.x 
-      && (slider.position.x - 3) < jackyCoin.position.x) {
+    var xDif = slider.position.x - jackyCoin.position.x
+    var yDif = slider.position.y - jackyCoin.position.y
+    var deathY = -17
+
+    if (jackyCoin.position.y <= deathY) {
+      coinObject.geometry.dispose()
+      coinObject.material.dispose()
+      desiredObjects -= 1;
+      scene.remove(jackyCoin);
+      gameOver(); 
+      cancelAnimationFrame( af );
+  }
+
+    if (yDif < 3 && yDif > -3 && xDif < 3 && xDif > -3) {
           points += jackyCoin.userData.pointsValue
           pointsDisplay.innerText = `${points} points`
           jackyAudio.play();
@@ -31,6 +41,7 @@ function createJackieCoin(){
           breakOpen("yellow", jackyCoin.position.x, jackyCoin.position.y);
           coinObject.geometry.dispose();
           coinObject.material.dispose();
+          desiredObjects -= 1;
           cancelAnimationFrame( af );
           scene.remove(jackyCoin);
   }
@@ -47,5 +58,4 @@ animate();
 //    breakOpen("#daa520", jackyCoin.position.x, jackyCoin.position.y)
 //    scene.remove(jackyCoin)
 // })
-desiredObjects.push(jackyCoin)
 }

@@ -14,24 +14,36 @@ function createCube(color, isSlider){
     var newCube = new THREE.Mesh( cubeGeometry, cubeMaterial );
     newCube.name = `${myColor} cube`;
     newCube.position.x = Math.random() * 40 - 20;
-    newCube.position.y = Math.random() * 40 + 15;
+    // newCube.position.y = Math.random() * 40 + 15;
+    newCube.position.y = 15
     newCube.userData.pointsValue = 0
     newCube.userData.colorMatch = false
     newCube.userData.shapeMatch = false
     newCube.userData.type = "cube"
-    if (matchProfile.color !== "" && matchProfile.color === myColor){
-        newCube.userData.pointsValue += 10;
+
+    //check color
+    if (matchProfile.color === ""){
         newCube.userData.colorMatch = true;
-    } else if (matchProfile.color !== "" && matchProfile.color !== myColor) {
-        newCube.userData.pointsValue -= 10;
+    } else if (matchProfile.color === myColor) {
+        newCube.userData.colorMatch = true;
+    } else {
         newCube.userData.colorMatch = false;
-    } else if (matchProfile.shape !== "" && matchProfile.shape === newCube.userData.type) {
-        newCube.userData.pointsValue += 5;
+    }
+    //check shape
+    if (matchProfile.shape === ""){
         newCube.userData.shapeMatch = true;
-    } else if (matchProfile.shape !== "" && matchProfile.shape !== newCube.userData.type) {
-        newCube.userData.pointsValue -= 5;
+    } else if (matchProfile.shape === newCube.userData.type) {
+        newCube.userData.shapeMatch = true;
+    } else {
         newCube.userData.shapeMatch = false;
     }
+    //evaluate points value
+    if (newCube.userData.colorMatch && newCube.userData.shapeMatch){
+        newCube.userData.pointsValue = 10;
+    } else {
+        newCube.userData.pointsValue = -10;
+    }
+
     scene.add( newCube );
     var cubeObject = scene.getObjectByName( newCube.name );
 
@@ -45,29 +57,27 @@ function createCube(color, isSlider){
   if (isSlider === undefined){ // if its not a slider, we animate it
     const animate = () => {
         af = requestAnimationFrame(animate)
-        let fallSpeed = Math.random()
-        let xRotation = Math.random()
-        let yRotation = Math.random()
-        newCube.rotation.x += xRotation
-        newCube.rotation.y += yRotation
-        newCube.position.y -= fallSpeed
-        var deathY = -8
+
+        newCube.rotation.x += 0.06
+        newCube.rotation.y += 0.06
+        newCube.position.y -= 0.06
+
+        var xDif = slider.position.x - newCube.position.x
+        var yDif = slider.position.y - newCube.position.y
+        var deathY = -17
 
         if (newCube.position.y <= deathY) {
-            breakOpen(myColor, newCube.position.x, newCube.position.y)
-            cubeAudio.play();
+            // breakOpen(myColor, newCube.position.x, newCube.position.y)
+            // cubeAudio.play();
             cubeObject.geometry.dispose()
             cubeObject.material.dispose()
-            desiredObjects.pop();
+            desiredObjects -= 1;
             scene.remove(newCube);
             gameOver(); 
             cancelAnimationFrame( af );
         }
 
-        if (newCube.position.y < -8.5 
-            && newCube.position.y > -12.5 
-            && (slider.position.x + 3) > newCube.position.x 
-            && (slider.position.x - 3) < newCube.position.x) {
+        if (yDif < 3 && yDif > -3 && xDif < 3 && xDif > -3){
                 points += newCube.userData.pointsValue
                 pointsDisplay.innerText = `${points} points`
                 cubeAudio.play();
@@ -75,7 +85,7 @@ function createCube(color, isSlider){
                 breakOpen(myColor, newCube.position.x, newCube.position.y)
                 cubeObject.geometry.dispose()
                 cubeObject.material.dispose()
-                desiredObjects.pop();
+                desiredObjects -= 1;
                 checkWin();
                 cancelAnimationFrame( af );
                 scene.remove(newCube);
@@ -84,5 +94,4 @@ function createCube(color, isSlider){
     
     animate();
   }
-    desiredObjects.push(newCube)
     }

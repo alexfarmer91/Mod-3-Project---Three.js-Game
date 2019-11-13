@@ -16,23 +16,34 @@ function createCone(color, isSlider){
     scene.add( newCone );
 
     newCone.position.x = Math.random() * 40 - 20;
-    newCone.position.y = Math.random() * 40 + 15;
+    // newCone.position.y = Math.random() * 40 + 15;
+    newCone.position.y = 15
     newCone.userData.pointsValue = 0
     newCone.userData.colorMatch = false
     newCone.userData.shapeMatch = false
     newCone.userData.type = "cone"
-    if (matchProfile.color !== "" && matchProfile.color === myColor){
-        newCone.userData.pointsValue += 10;
+    
+    //check color
+    if (matchProfile.color === ""){
         newCone.userData.colorMatch = true;
-    } else if (matchProfile.color !== "" && matchProfile.color !== myColor) {
-        newCone.userData.pointsValue -= 10;
+    } else if (matchProfile.color === myColor) {
+        newCone.userData.colorMatch = true;
+    } else {
         newCone.userData.colorMatch = false;
-    } else if (matchProfile.shape !== "" && matchProfile.shape === newCone.userData.type) {
-        newCone.userData.pointsValue += 5;
+    }
+    //check shape
+    if (matchProfile.shape === ""){
         newCone.userData.shapeMatch = true;
-    } else if (matchProfile.shape !== "" && matchProfile.shape !== newCone.userData.type) {
-        newCone.userData.pointsValue -= 5;
+    } else if (matchProfile.shape === newCone.userData.type) {
+        newCone.userData.shapeMatch = true;
+    } else {
         newCone.userData.shapeMatch = false;
+    }
+    //evaluate points value
+    if (newCone.userData.colorMatch && newCone.userData.shapeMatch){
+        newCone.userData.pointsValue = 10;
+    } else {
+        newCone.userData.pointsValue = -10;
     }
     
     scene.add( newCone );
@@ -48,29 +59,27 @@ function createCone(color, isSlider){
     
     const animate = () => {
         af = requestAnimationFrame(animate)
-        let fallSpeed = Math.random() + 0.01
-        let xRotation = Math.random() - 0.1
-        let yRotation = Math.random() - 0.1
-        newCone.rotation.x += xRotation
-        newCone.rotation.y += yRotation
-        newCone.position.y -= fallSpeed
-        var deathY = -8
+
+        newCone.rotation.x += 0.06
+        newCone.rotation.y += 0.06
+        newCone.position.y -= 0.06
+
+        var xDif = slider.position.x - newCone.position.x
+        var yDif = slider.position.y - newCone.position.y
+        var deathY = -17
 
         if (newCone.position.y <= deathY) {
-            breakOpen(myColor, newCone.position.x, newCone.position.y)
-            coneAudio.play();
+            // breakOpen(myColor, newCone.position.x, newCone.position.y)
+            // coneAudio.play();
             coneObject.geometry.dispose()
             coneObject.material.dispose()
-            desiredObjects.pop();
+            desiredObjects -= 1;
             scene.remove(newCone);
             gameOver(); 
             cancelAnimationFrame( af );
         }
 
-        if (newCone.position.y < -8.5 
-            && newCone.position.y > -12.5 
-            && (slider.position.x + 3) > newCone.position.x 
-            && (slider.position.x - 3) < newCone.position.x) {
+        if (yDif < 3 && yDif > -3 && xDif < 3 && xDif > -3) {
                 points += newCone.userData.pointsValue
                 pointsDisplay.innerText = `${points} points`
                 coneAudio.play();
@@ -78,7 +87,7 @@ function createCone(color, isSlider){
                 breakOpen(myColor, newCone.position.x, newCone.position.y)
                 coneObject.geometry.dispose()
                 coneObject.material.dispose()
-                desiredObjects.pop();
+                desiredObjects -= 1;
                 checkWin();
                 cancelAnimationFrame( af );
                 scene.remove(newCone);
@@ -87,6 +96,4 @@ function createCone(color, isSlider){
     
     animate();
   }
-
-    desiredObjects.push(newCone)
     }

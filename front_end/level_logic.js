@@ -1,17 +1,34 @@
 // matchProfile = {shape: matchShape, color: matchColor}
 
-const objectColors = ["pink", "green", "yellow", "red", "blue", "purple"];
-const shapeTypes = ["cone", "sphere", "cube"]
-let sphere = createSphere
-let cube = createCube
-let cone = createCone
-let coin = createJackieCoin
-const objectKinds = [sphere, cube, cone, coin]
+let desiredObjects;
 
-//create random shape
-function randomShape(){
-    return shapeTypes[Math.floor(Math.random() * shapeTypes.length)]
+var level = 1
+
+const objectColors = ["salmon", "green", "cyan", "red", "blue", "purple"];
+
+function randomColor() {
+    return objectColors[Math.floor(Math.random() * objectColors.length)];
+ }
+
+ 
+ function gameOver(){
+     if (desiredObjects === 0){
+        checkWin();
+        console.log('game over');
+    }
+    
 }
+
+function checkWin(){
+    // debugger
+    if (points >= level * 10){
+        
+        console.log('win')
+ } else {
+     console.log('lost')
+ }
+}
+
 //create random color
 function randomColor(){
     return objectColors[Math.floor(Math.random() * objectColors.length)]
@@ -19,18 +36,18 @@ function randomColor(){
 
 // var level;
 // var levelObjNos = fetch(user_data).then(r => r.json()).then(userInfo => {
-//     userInfo.games.level.last + 1
+//     userInfo.games.last.level + 1
     
 // })
 
 function createLevel(level){
     // create 'level * level" no of obecjecs
-    let levelMultiplier = level * 10;
+    desiredObjects = level * 10;
 
 
   if (level < 3) { 
     // determine shape to match
-    matchProfile.shape = randomShape();
+    matchProfile.shape = getRandomShape();
 
     //create a slider that matches the matching shape with random color
     determineSliderShapeAndColor(matchProfile.shape, randomColor())
@@ -40,21 +57,18 @@ function createLevel(level){
     matchProfile.color = randomColor();
 
     //create slider with random shape and matching color
-    determineSliderShapeAndColor(randomShape(), matchProfile.color)
+    determineSliderShapeAndColor(getRandomShape(), matchProfile.color)
   } else {
     //match by shape and color
     matchProfile.color = randomColor();
-    matchProfile.shape = randomShape();
+    matchProfile.shape = getRandomShape();
 
     //create slider that matches shape and color
     determineSliderShapeAndColor(matchProfile.shape, matchProfile.color)
   }
 
-    // Create objects for current level
-    for (var i = 0; i < levelMultiplier; i++) {
-        objectKinds[Math.floor(Math.random() * objectKinds.length)]()
-
-    }
+  //this is defined in world.js
+  toggleGenerateObjects();
 
 }
 

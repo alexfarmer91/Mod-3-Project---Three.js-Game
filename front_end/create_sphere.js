@@ -1,33 +1,5 @@
 
 var sphereAudio = new Audio('assets/minecraft.ogg');
-const pink = "#ec839f";
-var level = 1
-
-let speedArray = [0.05, 0.06, 0.08, 0.1]
-
-const objectColors = [pink, "green", "yellow", "red", "blue", "purple"];
-
-function randomColor() {
-    return objectColors[Math.floor(Math.random() * objectColors.length)];
- }
-
- 
- function gameOver(){
-     if (desiredObjects.length === 0){
-        checkWin();
-        console.log('game over');
-    }
-    
-}
-function checkWin(){
-    // debugger
-    if (points >= level * 10){
-        
-        console.log('win')
- } else {
-     console.log('lost')
- }
-}
 
 function createSphere(color, isSlider){
     // create shape
@@ -52,18 +24,27 @@ function createSphere(color, isSlider){
     newSphere.userData.shapeMatch = false
     newSphere.userData.type = "sphere"
 
-    if (matchProfile.color !== "" && matchProfile.color === myColor){
-        newSphere.userData.pointsValue += 10;
+    //check color
+    if (matchProfile.color === ""){
         newSphere.userData.colorMatch = true;
-    } else if (matchProfile.color !== "" && matchProfile.color !== myColor) {
-        newSphere.userData.pointsValue -= 10;
+    } else if (matchProfile.color === myColor) {
+        newSphere.userData.colorMatch = true;
+    } else {
         newSphere.userData.colorMatch = false;
-    } else if (matchProfile.shape !== "" && matchProfile.shape === newSphere.userData.type) {
-        newSphere.userData.pointsValue += 5;
+    }
+    //check shape
+    if (matchProfile.shape === ""){
         newSphere.userData.shapeMatch = true;
-    } else if (matchProfile.shape !== "" && matchProfile.shape !== newSphere.userData.type) {
-        newSphere.userData.pointsValue -= 5;
+    } else if (matchProfile.shape === newSphere.userData.type) {
+        newSphere.userData.shapeMatch = true;
+    } else {
         newSphere.userData.shapeMatch = false;
+    }
+    //evaluate points value
+    if (newSphere.userData.colorMatch && newSphere.userData.shapeMatch){
+        newSphere.userData.pointsValue = 10;
+    } else {
+        newSphere.userData.pointsValue = -10;
     }
 
     scene.add( newSphere );
@@ -80,23 +61,21 @@ function createSphere(color, isSlider){
    if (isSlider === undefined){
     const animate = () => {
         af = requestAnimationFrame(animate)
-        let fallSpeed = Math.random()
-        let xRotation = Math.random()
-        let yRotation = Math.random()
-        newSphere.rotation.x += xRotation
-        newSphere.rotation.y += yRotation
-        newSphere.position.y -= 0.04
+ 
+        newSphere.rotation.x += 0.04
+        newSphere.rotation.y += 0.04
+        newSphere.position.y -= 0.06
 
         var xDif = slider.position.x - newSphere.position.x
         var yDif = slider.position.y - newSphere.position.y
-        var deathY = -8
+        var deathY = -17
 
         if (newSphere.position.y <= deathY) {
-            breakOpen(myColor, newSphere.position.x, newSphere.position.y)
-            sphereAudio.play()
+            // breakOpen(myColor, newSphere.position.x, newSphere.position.y)
+            // sphereAudio.play()
             sphereObject.geometry.dispose()
             sphereObject.material.dispose()
-            desiredObjects.pop();
+            desiredObjects -= 1;
             scene.remove(newSphere);
             gameOver(); 
             cancelAnimationFrame( af );
@@ -112,7 +91,7 @@ function createSphere(color, isSlider){
                 breakOpen(myColor, newSphere.position.x, newSphere.position.y)
                 sphereObject.geometry.dispose()
                 sphereObject.material.dispose()
-                desiredObjects.pop();
+                desiredObjects -= 1;
                 cancelAnimationFrame( af );
                 scene.remove(newSphere);
                 gameOver();      
@@ -123,6 +102,4 @@ function createSphere(color, isSlider){
     
     animate();
   }
-
-   desiredObjects.push(newSphere)
     }

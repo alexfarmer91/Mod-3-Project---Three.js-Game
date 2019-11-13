@@ -6,8 +6,13 @@ pointsDisplay.innerText = `${points} points`
 let matchDisplay = document.getElementById("match-display") 
 matchShape = "sphere"
 matchColor = "purple"
+
+function determineMatchProfile(matchColor, matchShape) {
 matchProfile = {shape: matchShape, color: matchColor}
 matchDisplay.innerText = `hit all the ${matchProfile.color} ${matchProfile.shape}s`
+}
+//hardcoding, for now
+determineMatchProfile(matchColor, matchShape);
 
 function buildSignInForm(){
     let signInForm = document.createElement('form');
@@ -18,14 +23,12 @@ usernameField.id = "username-field";
 usernameField.type = "text";
 usernameField.name = "username";
 usernameField.placeholder = "username..."
-// usernameField.className = "textinput";
 
 let passwordField = document.createElement('input');
 passwordField.id = "password-field"
-passwordField.type = "text";
+passwordField.type = "password";
 passwordField.name = "password";
 passwordField.placeholder = "password..."
-// passwordField.className = "textinput";
 
 let loginButton = document.createElement('input');
 loginButton.type = 'submit';
@@ -33,7 +36,7 @@ loginButton.value = "submit";
 loginButton.className = "button";
 loginButton.style['background-color'] = 'Transparent';
 loginButton.style['font-family'] = 'Pixel Square';
-loginButton.style['color'] = 'green';
+loginButton.style['color'] = 'rgb(0, 255, 0)';
 loginButton.style['border-color'] = 'rgb(0, 255, 0)';
 
 let backButton = document.createElement('button');
@@ -60,8 +63,6 @@ signInForm.appendChild(backButton)
 let returningUserDiv = document.getElementById("returning-user-div");
 
 function buildReturningUserDiv(){
-    returningUserDiv.style.left = '37%';
-    returningUserDiv.style.top = '35%';
     returningUserDiv.innerHTML = "";
 
     let divider = document.createElement('div')
@@ -106,7 +107,7 @@ returningUserBtn.addEventListener('click', () => {
     returningUserForm.addEventListener('submit', (e) => {
         //the method here should be GET to Users table
         e.preventDefault()
-        debugger
+
     })
 
 })
