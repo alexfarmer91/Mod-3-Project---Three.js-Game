@@ -2,7 +2,12 @@
 
 let desiredObjects;
 
-var level = 1
+let level = 1
+let evaluateStatus = true;
+
+//display level on html
+let levelDispay = document.getElementById('level-display')
+levelDispay.innerText = `level ${level}`
 
 const objectColors = ["salmon", "green", "cyan", "red", "blue", "purple"];
 
@@ -12,7 +17,9 @@ function randomColor() {
 
  
  function gameOver(){
-     if (desiredObjects === 0){
+     if (desiredObjects <= 0){
+       evaluateStatus = false;
+        toggleGenerateObjects();
         checkWin();
         console.log('game over');
     }
@@ -20,13 +27,17 @@ function randomColor() {
 }
 
 function checkWin(){
-    // debugger
-    if (points >= level * 10){
-        
-        console.log('win')
- } else {
-     console.log('lost')
- }
+
+  let winStatues;
+    if (points >= level * 10){      
+      winStatues = 'win'
+    } else {
+     winStatues = 'lost'
+    }
+
+    if (evaluateStatus === false) {
+      createContinueMenu(winStatues);
+    }
 }
 
 //create random color
@@ -41,14 +52,16 @@ function randomColor(){
 // })
 
 function createLevel(level){
-    // create 'level * level" no of obecjecs
+    // create 'level * level" no of objects
     desiredObjects = level * 10;
+    evaluateStatus = true;
+    matchProfile = {};
 
 
   if (level < 3) { 
     // determine shape to match
     matchProfile.shape = getRandomShape();
-    determineMatchProfile(matchProfile.shape);
+    determineMatchProfile(undefined, matchProfile.shape);
 
       //this is defined in world.js
     toggleGenerateObjects();
@@ -59,6 +72,9 @@ function createLevel(level){
   {
     //determine color to match
     matchProfile.color = randomColor();
+    determineMatchProfile(matchProfile.color, undefined);
+
+    toggleGenerateObjects();
 
     //create slider with random shape and matching color
     // determineSliderShapeAndColor(getRandomShape(), matchProfile.color)
@@ -66,6 +82,10 @@ function createLevel(level){
     //match by shape and color
     matchProfile.color = randomColor();
     matchProfile.shape = getRandomShape();
+
+    determineMatchProfile(matchProfile.color, matchProfile.shape)
+
+    toggleGenerateObjects();
 
     //create slider that matches shape and color
     // determineSliderShapeAndColor(matchProfile.shape, matchProfile.color)
@@ -82,13 +102,4 @@ function determineSliderShapeAndColor(shape, color){
     } else if (shape === "cube"){
      createCube(color, true)
     }
-
-    const domEvents = new THREEx.DomEvents(camera, renderer.domElement)
-    domEvents.addEventListener(slider, 'click', (e) => {
-    createSphere();
-    // createCube();
-    // createCone();
-    // createJackieCoin();
-    // debugger
-})
-}
+  }

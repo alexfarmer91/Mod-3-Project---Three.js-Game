@@ -8,9 +8,6 @@
     <style src="main.css"></style>
     <style>
 h2 {
-    position: absolute;
-    top: 1.5em;
-    left: 1.5em;
     color: rgb(0, 255, 0);
     font-family: 'Pixel Square';
     }
@@ -31,6 +28,7 @@ input[type=text], input[type=password]{
     border: none;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
     outline: none;
 }
 ::placeholder{
@@ -38,7 +36,7 @@ input[type=text], input[type=password]{
     padding: 16px 32px;
     color: rgb(0, 255, 0);
 }
-#match-display, #returning-user-div {
+#match-display, #controls-div {
     /* top: 25em;
     left: 2em; */
     font-size: 20px;
@@ -52,10 +50,10 @@ input[type=text], input[type=password]{
     border-spacing: 0px;
     background-color: black;
 }
-/* #data-panel {
-    background-image: url("./assets/jacky.png");
-    background-color: #cccccc;
-} */
+#data-panel {
+    text-align: center;
+    align-content: center;
+}
 
 form {
     top: center;
@@ -70,12 +68,12 @@ form {
     display:inline-block;
 }
 .button {
-  padding: 16px 32px;
+  /* padding: 16px 32px; */
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  /* display: inline-block; */
   font-size: 16px;
-  margin: 4px 2px;
+  /* margin: 4px 2px; */
   cursor: pointer;
   outline: none;
 }
@@ -113,8 +111,9 @@ form {
         <tr>
           <td id="data-panel" style="width:20%">
                 <h2 id="points-display"></h2>
+                <h2 id="level-display"></h2>
                 <div id="match-display"></div>
-                <div id="returning-user-div"></div>
+                <div id="controls-div"></div>
           </td>
           <td id="game-canvas" style="width:80%"></td>
         </tr>

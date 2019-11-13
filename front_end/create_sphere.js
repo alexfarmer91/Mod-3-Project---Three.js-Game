@@ -64,7 +64,7 @@ function createSphere(color, isSlider){
  
         newSphere.rotation.x += 0.04
         newSphere.rotation.y += 0.04
-        newSphere.position.y -= 0.06
+        newSphere.position.y -= 0.1
 
         var xDif = slider.position.x - newSphere.position.x
         var yDif = slider.position.y - newSphere.position.y
@@ -75,9 +75,11 @@ function createSphere(color, isSlider){
             // sphereAudio.play()
             sphereObject.geometry.dispose()
             sphereObject.material.dispose()
-            desiredObjects -= 1;
+            if (evaluateStatus === true){
+                desiredObjects -= 1;
+                gameOver(); 
+            }
             scene.remove(newSphere);
-            gameOver(); 
             cancelAnimationFrame( af );
         }
 
@@ -91,10 +93,12 @@ function createSphere(color, isSlider){
                 breakOpen(myColor, newSphere.position.x, newSphere.position.y)
                 sphereObject.geometry.dispose()
                 sphereObject.material.dispose()
-                desiredObjects -= 1;
+                if (evaluateStatus === true){
+                    desiredObjects -= 1;
+                    gameOver(); 
+                }
                 cancelAnimationFrame( af );
-                scene.remove(newSphere);
-                gameOver();      
+                scene.remove(newSphere);  
             } 
 
         

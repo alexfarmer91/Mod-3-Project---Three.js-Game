@@ -29,10 +29,10 @@ function createScene(){
    })
 
 //add stars
-   let times = 500;
-    for(var i=0; i < times; i++){
-    createBackground();
-   }
+//    let times = 500;
+//     for(var i=0; i < times; i++){
+//     createBackground();
+//    }
 //add lighting
    spotLight = new THREE.SpotLight( 0xFFFFFF, 2);
    spotLight.position.set( 200, 250, 600 );
@@ -106,10 +106,18 @@ let jackyInterval;
 function toggleGenerateObjects(){
     generatingObjects = !generatingObjects; 
 
+    let myColor = matchProfile.color
+    let myShape = matchProfile.shape
+
+    if (myColor === "" || myShape === "") {
+        myColor = randomColor();
+        myShape = getRandomShape();
+    }
+
     if (generatingObjects === true){
      jackyInterval = setInterval(createJackieCoin, 15000);
-     explicitInterval = setInterval(createObject, 8000, matchProfile.color, matchProfile.shape);
-     randomInterval = setInterval(createObject, 3000);
+     explicitInterval = setInterval(createObject, 8000, myColor, myShape);
+     randomInterval = setInterval(createObject, 2000);
     } else {
      clearInterval(jackyInterval);
      clearInterval(explicitInterval);

@@ -51,8 +51,7 @@ function createCube(color, isSlider){
         slider = newCube
         slider.position.x = -12
     }
-
-    debugger 
+ 
     let af;
 
   if (isSlider === undefined){ // if its not a slider, we animate it
@@ -61,7 +60,7 @@ function createCube(color, isSlider){
 
         newCube.rotation.x += 0.06
         newCube.rotation.y += 0.06
-        newCube.position.y -= 0.06
+        newCube.position.y -= 0.1
 
         var xDif = slider.position.x - newCube.position.x
         var yDif = slider.position.y - newCube.position.y
@@ -72,9 +71,11 @@ function createCube(color, isSlider){
             // cubeAudio.play();
             cubeObject.geometry.dispose()
             cubeObject.material.dispose()
-            desiredObjects -= 1;
+            if (evaluateStatus === true){
+                desiredObjects -= 1;
+                gameOver(); 
+            }
             scene.remove(newCube);
-            gameOver(); 
             cancelAnimationFrame( af );
         }
 
@@ -86,10 +87,12 @@ function createCube(color, isSlider){
                 breakOpen(myColor, newCube.position.x, newCube.position.y)
                 cubeObject.geometry.dispose()
                 cubeObject.material.dispose()
-                desiredObjects -= 1;
-                checkWin();
+                if (evaluateStatus === true){
+                    desiredObjects -= 1;
+                    gameOver(); 
+                }
                 cancelAnimationFrame( af );
-                scene.remove(newCube);
+                scene.remove(newCube); 
         }
     }
     

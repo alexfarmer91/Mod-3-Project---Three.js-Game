@@ -58,7 +58,7 @@ backButton.style['color'] = 'rgb(0, 255, 0)';
 backButton.style['border-color'] = 'rgb(0, 255, 0)';
 backButton.addEventListener('click', () => {
     sphereAudio.play();
-    buildReturningUserDiv();
+    buildControlsDiv();;
 
 })
 signInForm.appendChild(usernameField)
@@ -66,14 +66,14 @@ signInForm.appendChild(passwordField)
 signInForm.appendChild(loginButton)
 signInForm.appendChild(backButton)
 
- returningUserDiv.innerHTML = "";
- returningUserDiv.appendChild(signInForm);
+ controlsDiv.innerHTML = "";
+ controlsDiv.appendChild(signInForm);
 }
 
-let returningUserDiv = document.getElementById("returning-user-div");
+let controlsDiv = document.getElementById("controls-div");
 
-function buildReturningUserDiv(){
-    returningUserDiv.innerHTML = "";
+function buildControlsDiv(){
+    controlsDiv.innerHTML = "";
 
     let divider = document.createElement('div')
     divider.className = "divider";
@@ -98,8 +98,8 @@ newUserBtn.addEventListener('click', () => {
     
 })
 
-returningUserDiv.appendChild(newUserBtn)
-returningUserDiv.appendChild(divider)
+controlsDiv.appendChild(newUserBtn)
+controlsDiv.appendChild(divider)
 
 let returningUserBtn = document.createElement('button')
 returningUserBtn.id = "returning-player";
@@ -122,6 +122,60 @@ returningUserBtn.addEventListener('click', () => {
 
 })
 
-returningUserDiv.appendChild(returningUserBtn)
+controlsDiv.appendChild(returningUserBtn)
 }
-buildReturningUserDiv();
+buildControlsDiv();
+
+function createContinueMenu(winOrLose){
+    controlsDiv.innerHTML = "";
+    sphereAudio.play();
+    let header = document.createElement('h2');
+    header.innerText = `you ${winOrLose}. continue?`
+    controlsDiv.appendChild(header)
+
+    let continueButton = document.createElement('button')
+    continueButton.id = "continue-button";
+    continueButton.className = "button";
+    continueButton.innerText = "yes";
+    continueButton.style['background-color'] = 'Transparent';
+    continueButton.style['font-family'] = 'Pixel Square';
+    continueButton.style['color'] = 'rgb(0, 255, 0)';
+    continueButton.style['border-color'] = 'rgb(0, 255, 0)';
+
+    continueButton.addEventListener('click', (e) => {
+     sphereAudio.play();
+        e.preventDefault()
+        level += 1
+        console.log(level)
+        levelDispay.innerText = `level ${level}`
+        controlsDiv.innerHTML = "";
+        createExitButton();
+        createLevel(level)
+        console.log(level)
+
+    })
+    controlsDiv.appendChild(continueButton)
+
+    createExitButton();
+
+}
+
+function createExitButton(){
+    let exitButton = document.createElement('button')
+    exitButton.id = "exit-button";
+    exitButton.className = "button";
+    exitButton.innerText = "exit game";
+    exitButton.style['background-color'] = 'Transparent';
+    exitButton.style['font-family'] = 'Pixel Square';
+    exitButton.style['color'] = 'rgb(0, 255, 0)';
+    exitButton.style['border-color'] = 'rgb(0, 255, 0)';
+
+    exitButton.addEventListener('click', (e) => {
+     sphereAudio.play();
+        e.preventDefault();
+        sphereAudio.play();
+        location.reload();
+
+    })
+    controlsDiv.appendChild(exitButton)
+}

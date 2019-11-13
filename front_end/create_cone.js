@@ -62,7 +62,7 @@ function createCone(color, isSlider){
 
         newCone.rotation.x += 0.06
         newCone.rotation.y += 0.06
-        newCone.position.y -= 0.06
+        newCone.position.y -= 0.1
 
         var xDif = slider.position.x - newCone.position.x
         var yDif = slider.position.y - newCone.position.y
@@ -73,9 +73,11 @@ function createCone(color, isSlider){
             // coneAudio.play();
             coneObject.geometry.dispose()
             coneObject.material.dispose()
-            desiredObjects -= 1;
+            if (evaluateStatus === true){
+                desiredObjects -= 1;
+                gameOver(); 
+            }
             scene.remove(newCone);
-            gameOver(); 
             cancelAnimationFrame( af );
         }
 
@@ -87,8 +89,10 @@ function createCone(color, isSlider){
                 breakOpen(myColor, newCone.position.x, newCone.position.y)
                 coneObject.geometry.dispose()
                 coneObject.material.dispose()
-                desiredObjects -= 1;
-                checkWin();
+                if (evaluateStatus === true){
+                    desiredObjects -= 1;
+                    gameOver(); 
+                }
                 cancelAnimationFrame( af );
                 scene.remove(newCone);
         }

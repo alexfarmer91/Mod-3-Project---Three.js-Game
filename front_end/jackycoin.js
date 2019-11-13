@@ -18,7 +18,7 @@ function createJackieCoin(){
   const animate = () => {
     af = requestAnimationFrame(animate)
     jackyCoin.rotation.y += 0.04
-    jackyCoin.position.y -= 0.07
+    jackyCoin.position.y -= 0.1
 
     var xDif = slider.position.x - jackyCoin.position.x
     var yDif = slider.position.y - jackyCoin.position.y
@@ -27,9 +27,11 @@ function createJackieCoin(){
     if (jackyCoin.position.y <= deathY) {
       coinObject.geometry.dispose()
       coinObject.material.dispose()
-      desiredObjects -= 1;
+      if (evaluateStatus === true){
+        desiredObjects -= 1;
+        gameOver(); 
+      }
       scene.remove(jackyCoin);
-      gameOver(); 
       cancelAnimationFrame( af );
   }
 
@@ -41,7 +43,10 @@ function createJackieCoin(){
           breakOpen("yellow", jackyCoin.position.x, jackyCoin.position.y);
           coinObject.geometry.dispose();
           coinObject.material.dispose();
-          desiredObjects -= 1;
+          if (evaluateStatus === true){
+            desiredObjects -= 1;
+            gameOver(); 
+          }
           cancelAnimationFrame( af );
           scene.remove(jackyCoin);
   }
@@ -49,13 +54,4 @@ function createJackieCoin(){
 
 animate();
 
-// const jackyEvents = new THREEx.DomEvents(camera, renderer.domElement)
-// jackyEvents.addEventListener(jackyCoin, 'click', (e) => {
-//    points += jackyCoin.userData.pointsValue
-//    pointsDisplay.innerText = `${points} points`
-//    jackyAudio.play();
-//    jackyCoin.userData.pointsValue = 0
-//    breakOpen("#daa520", jackyCoin.position.x, jackyCoin.position.y)
-//    scene.remove(jackyCoin)
-// })
 }
