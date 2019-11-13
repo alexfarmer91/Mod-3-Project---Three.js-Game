@@ -1,34 +1,31 @@
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-var renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setClearColor("#000000");
-renderer.setSize(window.innerWidth, window.innerHeight);
-let canvasDiv = document.getElementById("game-canvas")
-canvasDiv.appendChild(renderer.domElement);
-
+//declare variables
 //level variable is declared in level_logic.js
-
-
 let shapes = ['cone', 'sphere', 'cube']
 let sliderArray = []
+let generatingObjects = false;
+let slidingObj = [];
 
-window.addEventListener('resize', (e) => {
+function createScene(){
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  var renderer = new THREE.WebGLRenderer({antialias: true});
+   renderer.setClearColor("#000000");
+   renderer.setSize(window.innerWidth, window.innerHeight);
+   let canvasDiv = document.getElementById("game-canvas")
+   canvasDiv.appendChild(renderer.domElement);
+
+   window.addEventListener('resize', (e) => {
     console.log(main)
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.updateProjectionMatrix();
     camera.aspect = window.innerWidth, window.innerHeight;
-})
-
-let generatingObjects = false;
-// console.log(desiredObjects.length)
-let slidingObj = [];
-// console.log(desiredObjects)
+   })
 
 //add stars
-let times = 500;
-for(var i=0; i < times; i++){
+   let times = 500;
+    for(var i=0; i < times; i++){
     createBackground();
-}
+   }
 //add lighting
 var spotLight = new THREE.SpotLight( 0xFFFFFF, 2);
 spotLight.position.set( 200, 250, 600 );
@@ -41,6 +38,9 @@ spotLight.shadow.mapSize.width = 512; // default
 spotLight.shadow.mapSize.height = 512; // default
 spotLight.shadow.camera.near = 0.5; // default
 spotLight.shadow.camera.far = 15000; // default
+}
+
+createScene();
 
 // create shape
 var geometry = new THREE.SphereGeometry( 2, 32, 32 );
