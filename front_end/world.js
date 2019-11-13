@@ -4,14 +4,21 @@ let shapes = ['cone', 'sphere', 'cube']
 let sliderArray = []
 let generatingObjects = false;
 let slidingObj = [];
+let scene;
+let camera;
+let renderer;
+let canvasDiv = document.getElementById("game-canvas")
+let spotLight;
+let slider;
+let matchProfile = {}
 
 function createScene(){
-  var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-  var renderer = new THREE.WebGLRenderer({antialias: true});
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  renderer = new THREE.WebGLRenderer({antialias: true});
    renderer.setClearColor("#000000");
    renderer.setSize(window.innerWidth, window.innerHeight);
-   let canvasDiv = document.getElementById("game-canvas")
+   canvasDiv = document.getElementById("game-canvas")
    canvasDiv.appendChild(renderer.domElement);
 
    window.addEventListener('resize', (e) => {
@@ -27,69 +34,51 @@ function createScene(){
     createBackground();
    }
 //add lighting
-var spotLight = new THREE.SpotLight( 0xFFFFFF, 2);
-spotLight.position.set( 200, 250, 600 );
-spotLight.target.position.set( 100, -50, 0 );
-spotLight.castShadow = true;
-scene.add( spotLight.target );
-scene.add( spotLight );
+   spotLight = new THREE.SpotLight( 0xFFFFFF, 2);
+   spotLight.position.set( 200, 250, 600 );
+   spotLight.target.position.set( 100, -50, 0 );
+   spotLight.castShadow = true;
+   scene.add( spotLight.target );
+   scene.add( spotLight );
 //Set up shadow properties for the spotLight
-spotLight.shadow.mapSize.width = 512; // default
-spotLight.shadow.mapSize.height = 512; // default
-spotLight.shadow.camera.near = 0.5; // default
-spotLight.shadow.camera.far = 15000; // default
+   spotLight.shadow.mapSize.width = 512; // default
+   spotLight.shadow.mapSize.height = 512; // default
+   spotLight.shadow.camera.near = 0.5; // default
+   spotLight.shadow.camera.far = 15000; // default
+
+   //zoom camera out
+   camera.position.z = 20;
 }
 
 createScene();
 
+function createSlider(){
 // create shape
-var geometry = new THREE.SphereGeometry( 2, 32, 32 );
+ var geometry = new THREE.SphereGeometry( 2, 32, 32 );
 // create material, color, or image texture
 
-var material = new THREE.MeshPhongMaterial ( {color: "purple", wireframe: false} );
-var slider = new THREE.Mesh( geometry, material );
-slider.position.y = -12;
-scene.add( slider );
-sliderArray.push(slider)
+ var material = new THREE.MeshPhongMaterial ( {color: "purple", wireframe: false} );
+ slider = new THREE.Mesh( geometry, material );
+ slider.position.y = -12;
+ scene.add( slider );
+ sliderArray.push(slider)
 
-// zoom camera out
-camera.position.z = 20;
-
-//add event listeners
-// const domEvents = new THREEx.DomEvents(camera, renderer.domElement)
-// domEvents.addEventListener(slider, 'click', (e) => {
-//     toggleGenerateObjects();
-//     // createJackieCoin();
-// })
-
-// document.addEventListener('keydown', event => {
-//     if (event.keyCode == '37' && slider.position.x > -29){
-//      event.preventDefault();
-//      slider.position.x -= 0.8
-//     } else if (event.keyCode == '38' && slider.position.y < 14){
-//         event.preventDefault();
-//         slider.position.y += 0.8
-//     } else if (event.keyCode == '39' && slider.position.x < 29){
-//         event.preventDefault();
-//         slider.position.x += 0.8
-//     } else if (event.keyCode == '40' && slider.position.y > -14){
-//         event.preventDefault();
-//         slider.position.y -= 0.8
-//     } 
-//     false;
-// })
+ implementDragging()
+}
+createSlider()
 
 //Implement Dragging
-var controls = new THREE.DragControls( sliderArray, camera, renderer.domElement );
-controls.addEventListener( 'dragstart', function ( event ) {
+function implementDragging(){
+ var controls = new THREE.DragControls( sliderArray, camera, renderer.domElement );
+ controls.addEventListener( 'dragstart', function ( event ) {
    event.object.material.emissive.set( 0xaaaaaa );
-} );
-controls.addEventListener( 'dragend', function ( event ) {
+ } );
+ controls.addEventListener( 'dragend', function ( event ) {
    event.object.material.emissive.set( 0x000000 );
    console.log(slider)
-} );
+ } );
+}
 
-//========================================================================
 // createLevel(level)
 
 //create animations

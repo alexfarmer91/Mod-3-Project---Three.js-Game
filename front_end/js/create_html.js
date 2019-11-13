@@ -4,15 +4,25 @@ let points = 0;
 pointsDisplay.innerText = `${points} points`
 
 let matchDisplay = document.getElementById("match-display") 
-matchShape = "sphere"
-matchColor = "purple"
+// matchShape = "sphere"
+// matchColor = "purple"
 
 function determineMatchProfile(matchColor, matchShape) {
-matchProfile = {shape: matchShape, color: matchColor}
+    let myColor = matchColor
+    let myShape = matchShape
+
+    if (myColor === undefined){
+        myColor = ""
+    }
+
+    if (myShape === undefined){
+        myShape = ""
+    }
+matchProfile = {shape: myShape, color: myColor}
 matchDisplay.innerText = `hit all the ${matchProfile.color} ${matchProfile.shape}s`
 }
 //hardcoding, for now
-determineMatchProfile(matchColor, matchShape);
+// determineMatchProfile(matchColor, matchShape);
 
 function buildSignInForm(){
     let signInForm = document.createElement('form');

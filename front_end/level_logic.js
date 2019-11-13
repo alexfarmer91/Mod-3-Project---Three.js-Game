@@ -48,6 +48,10 @@ function createLevel(level){
   if (level < 3) { 
     // determine shape to match
     matchProfile.shape = getRandomShape();
+    determineMatchProfile(matchProfile.shape);
+
+      //this is defined in world.js
+    toggleGenerateObjects();
 
     //create a slider that matches the matching shape with random color
     // determineSliderShapeAndColor(matchProfile.shape, randomColor())
@@ -66,9 +70,6 @@ function createLevel(level){
     //create slider that matches shape and color
     // determineSliderShapeAndColor(matchProfile.shape, matchProfile.color)
   }
-
-  //this is defined in world.js
-  toggleGenerateObjects();
 
 }
 

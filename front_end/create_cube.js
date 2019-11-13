@@ -52,6 +52,7 @@ function createCube(color, isSlider){
         slider.position.x = -12
     }
 
+    debugger 
     let af;
 
   if (isSlider === undefined){ // if its not a slider, we animate it
