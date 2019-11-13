@@ -1,5 +1,7 @@
 //declare variables
 //level variable is declared in level_logic.js
+
+// test
 let shapes = ['cone', 'sphere', 'cube']
 let sliderArray = []
 let generatingObjects = false;
